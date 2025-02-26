@@ -1,0 +1,15 @@
+import boto3
+
+# Initialize S3 client
+s3 = boto3.client('s3')
+
+# Upload a file
+s3.upload_file('local_file.txt', 'my_bucket', 's3_file.txt')
+
+# Download a file
+s3.download_file('my_bucket', 's3_file.txt', 'downloaded_file.txt')
+
+# List files in a bucket
+response = s3.list_objects_v2(Bucket='my_bucket')
+for obj in response.get('Contents', []):
+    print(obj['Key'])

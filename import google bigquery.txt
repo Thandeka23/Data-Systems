@@ -1,0 +1,21 @@
+from google.cloud import bigquery
+
+# Initialize BigQuery client
+client = bigquery.Client()
+
+# Create a dataset
+dataset_id = 'my_dataset'
+dataset = bigquery.Dataset(dataset_id)
+client.create_dataset(dataset)
+
+# Load data into BigQuery
+table_id = 'my_dataset.my_table'
+job_config = bigquery.LoadJobConfig(source_format=bigquery.SourceFormat.CSV)
+with open('data.csv', 'rb') as source_file:
+    job = client.load_table_from_file(source_file, table_id, job_config=job_config)
+
+# Query data
+query = 'SELECT * FROM `my_dataset.my_table` LIMIT 10'
+results = client.query(query).result()
+for row in results:
+    print(row)
